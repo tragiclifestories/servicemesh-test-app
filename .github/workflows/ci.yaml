@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: tragiclifestories/servicemesh-test-app:latest,tragiclifestories/servicemesh-test-app:{{github.sha}}
+          tags: tragiclifestories/servicemesh-test-app:latest,tragiclifestories/servicemesh-test-app:${{ github.sha }}
