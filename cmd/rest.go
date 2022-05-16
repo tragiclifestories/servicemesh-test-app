@@ -60,6 +60,9 @@ func RestAction(c *cli.Context) error {
 
 	{
 		mux := http.NewServeMux()
+		mux.HandleFunc("/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("healthy"))
+		})
 		mux.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 			params := r.URL.Query()
 			from := "world"
