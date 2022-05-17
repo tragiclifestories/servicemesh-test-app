@@ -1,1 +1,0 @@
-{ runtimeHandler : Text }

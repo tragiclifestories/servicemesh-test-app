@@ -1,77 +1,79 @@
-let kubernetes = ./vendor/k8s/1.22/package.dhall
+let k8s =
+      https://raw.githubusercontent.com/dhall-lang/dhall-k8s/master/1.22/package.dhall
+        sha256:53c03eb6a2cf118b3608f81253293993308a11f46b4463a18e376d343163bb21
 
-let prelude = ./vendor/k8s/Prelude.dhall
+let Text/concat =
+      https://raw.githubusercontent.com/dhall-lang/dhall-lang/v21.1.0/Prelude/Text/concat.dhall
+        sha256:731265b0288e8a905ecff95c97333ee2db614c39d69f1514cb8eed9259745fc0
 
-let union = ./vendor/k8s/1.22/typesUnion.dhall
+let List/map =
+      https://raw.githubusercontent.com/dhall-lang/dhall-lang/v21.1.0/Prelude/List/map.dhall
+        sha256:dd845ffb4568d40327f2a817eb42d1c6138b929ca758d50bc33112ef3c885680
+
+let union = k8s.Resource
 
 let makeResty =
       \(id : Natural) ->
-        let name = prelude.Text.concat [ "resty-mcrestface-", Natural/show id ]
+        let name = Text/concat [ "resty-mcrestface-", Natural/show id ]
 
-        in  kubernetes.Deployment::{
-            , metadata = kubernetes.ObjectMeta::{
-              , namespace = Some "istio-test"
-              , name = Some name
-              }
-            , spec = Some kubernetes.DeploymentSpec::{
-              , selector = kubernetes.LabelSelector::{
-                , matchLabels = Some (toMap { app = name })
+        let deployment =
+              k8s.Deployment::{
+              , metadata = k8s.ObjectMeta::{
+                , namespace = Some "istio-test"
+                , name = Some name
                 }
-              , replicas = Some 1
-              , template = kubernetes.PodTemplateSpec::{
-                , metadata = Some kubernetes.ObjectMeta::{
-                  , name = Some name
-                  , labels = Some (toMap { app = name })
+              , spec = Some k8s.DeploymentSpec::{
+                , selector = k8s.LabelSelector::{
+                  , matchLabels = Some (toMap { app = name })
                   }
-                , spec = Some kubernetes.PodSpec::{
-                  , containers =
-                    [ kubernetes.Container::{
-                      , name = "app"
-                      , image = Some
-                          "tragiclifestories/servicemesh-test-app:latest"
-                      , command = Some
-                        [ "servicemesh-test-app", "rest", "--identity", name ]
-                      , ports = Some
-                        [ kubernetes.ContainerPort::{ containerPort = 8888 } ]
-                      , livenessProbe = Some kubernetes.Probe::{
-                        , httpGet = Some kubernetes.HTTPGetAction::{
-                          , path = Some "/healthcheck"
-                          , port = kubernetes.NatOrString.Nat 8888
+                , replicas = Some 1
+                , template = k8s.PodTemplateSpec::{
+                  , metadata = Some k8s.ObjectMeta::{
+                    , name = Some name
+                    , labels = Some (toMap { app = name })
+                    }
+                  , spec = Some k8s.PodSpec::{
+                    , containers =
+                      [ k8s.Container::{
+                        , name = "app"
+                        , image = Some
+                            "tragiclifestories/servicemesh-test-app:latest"
+                        , command = Some
+                          [ "servicemesh-test-app", "rest", "--identity", name ]
+                        , ports = Some
+                          [ k8s.ContainerPort::{ containerPort = 8888 } ]
+                        , livenessProbe = Some k8s.Probe::{
+                          , httpGet = Some k8s.HTTPGetAction::{
+                            , path = Some "/healthcheck"
+                            , port = k8s.NatOrString.Nat 8888
+                            }
+                          }
+                        , readinessProbe = Some k8s.Probe::{
+                          , httpGet = Some k8s.HTTPGetAction::{
+                            , path = Some "/healthcheck"
+                            , port = k8s.NatOrString.Nat 8888
+                            }
                           }
                         }
-                      , readinessProbe = Some kubernetes.Probe::{
-                        , httpGet = Some kubernetes.HTTPGetAction::{
-                          , path = Some "/healthcheck"
-                          , port = kubernetes.NatOrString.Nat 8888
-                          }
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
               }
-            }
+
+        in  union.Deployment deployment
 
 let namespace =
-      kubernetes.Namespace::{
-      , metadata = kubernetes.ObjectMeta::{
+      k8s.Namespace::{
+      , metadata = k8s.ObjectMeta::{
         , name = Some "istio-test"
         , labels = Some (toMap { istio-injection = "enabled" })
         }
       }
 
-let resty1 = makeResty 1
-
-let resty2 = makeResty 2
-
-let resty3 = makeResty 3
+let deployments = List/map Natural union makeResty [ 1, 2, 3 ]
 
 in  { apiVersion = "v1"
     , kind = "List"
-    , items =
-      [ union.Namespace namespace
-      , union.Deployment resty1
-      , union.Deployment resty2
-      , union.Deployment resty3
-      ]
+    , items = [ union.Namespace namespace ] # deployments
     }

@@ -1,1 +1,0 @@
-{ sizeBytes = None Natural }
