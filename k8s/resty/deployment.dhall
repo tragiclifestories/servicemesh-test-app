@@ -56,4 +56,13 @@ in  \(id : Natural) ->
               }
             }
 
-      in  union.Deployment deployment
+      let service =
+            k8s.Service::{
+            , metadata = k8s.ObjectMeta::{
+              , namespace = Some "istio-test"
+              , name = Some name
+              , labels = Some (toMap { app = name, service = name })
+              }
+            }
+
+      in  [ union.Deployment deployment, union.Service service ]

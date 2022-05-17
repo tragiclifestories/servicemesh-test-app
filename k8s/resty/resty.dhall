@@ -1,3 +1,3 @@
 let makeDeployment = ./deployment.dhall
-
-in  \(id : Natural) -> [ makeDeployment id ]
+let makeIam = ./iam.dhall
+in \(id : Natural) -> makeDeployment id # makeIam id
