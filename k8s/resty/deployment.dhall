@@ -67,6 +67,7 @@ in  \(id : Natural) ->
             , spec = Some k8s.ServiceSpec::{
               , ports = Some
                 [ k8s.ServicePort::{ name = Some "http", port = 8888 } ]
+              , selector = Some (toMap { app = name })
               }
             }
 
