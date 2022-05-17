@@ -14,7 +14,7 @@ in  \(id : Natural) ->
       let serviceAccount =
             k8s.ServiceAccount::{
             , metadata = k8s.ObjectMeta::{
-              , namespace = Some "istio-test"
+              , namespace = Some "linkerd-test"
               , name = Some name
               }
             }

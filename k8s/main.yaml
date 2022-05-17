@@ -4,13 +4,13 @@ kind: Namespace
 metadata:
   labels:
     istio-injection: enabled
-  name: istio-test
+  name: linkerd-test
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: resty-mcrestface-1
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   replicas: 1
   selector:
@@ -49,7 +49,7 @@ metadata:
     app: resty-mcrestface-1
     service: resty-mcrestface-1
   name: resty-mcrestface-1
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   ports:
     - name: http
@@ -61,13 +61,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: resty-mcrestface-1
-  namespace: istio-test
+  namespace: linkerd-test
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: resty-mcrestface-2
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   replicas: 1
   selector:
@@ -106,7 +106,7 @@ metadata:
     app: resty-mcrestface-2
     service: resty-mcrestface-2
   name: resty-mcrestface-2
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   ports:
     - name: http
@@ -118,13 +118,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: resty-mcrestface-2
-  namespace: istio-test
+  namespace: linkerd-test
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: resty-mcrestface-3
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   replicas: 1
   selector:
@@ -163,7 +163,7 @@ metadata:
     app: resty-mcrestface-3
     service: resty-mcrestface-3
   name: resty-mcrestface-3
-  namespace: istio-test
+  namespace: linkerd-test
 spec:
   ports:
     - name: http
@@ -175,4 +175,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: resty-mcrestface-3
-  namespace: istio-test
+  namespace: linkerd-test

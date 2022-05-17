@@ -13,16 +13,11 @@ let union = k8s.Resource
 let namespace =
       k8s.Namespace::{
       , metadata = k8s.ObjectMeta::{
-        , name = Some "istio-test"
+        , name = Some "linkerd-test"
         , labels = Some (toMap { istio-injection = "enabled" })
         }
       }
 
 let resties = List/concatMap Natural union makeResty [ 1, 2, 3 ]
 
---in  { apiVersion = "v1"
-    --, kind = "List"
-    --, items = [ union.Namespace namespace ] # resties
-    --}
-
-in [ union.Namespace namespace ] # resties
+in  [ union.Namespace namespace ] # resties

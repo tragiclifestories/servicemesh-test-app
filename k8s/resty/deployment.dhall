@@ -14,7 +14,7 @@ in  \(id : Natural) ->
       let deployment =
             k8s.Deployment::{
             , metadata = k8s.ObjectMeta::{
-              , namespace = Some "istio-test"
+              , namespace = Some "linkerd-test"
               , name = Some name
               }
             , spec = Some k8s.DeploymentSpec::{
@@ -60,7 +60,7 @@ in  \(id : Natural) ->
       let service =
             k8s.Service::{
             , metadata = k8s.ObjectMeta::{
-              , namespace = Some "istio-test"
+              , namespace = Some "linkerd-test"
               , name = Some name
               , labels = Some (toMap { app = name, service = name })
               }
