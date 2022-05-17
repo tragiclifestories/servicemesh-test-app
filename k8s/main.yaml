@@ -40,6 +40,7 @@ spec:
             httpGet:
               path: /healthcheck
               port: 8888
+      serviceAccountName: resty-mcrestface-1
 ---
 apiVersion: v1
 kind: Service
@@ -49,6 +50,10 @@ metadata:
     service: resty-mcrestface-1
   name: resty-mcrestface-1
   namespace: istio-test
+spec:
+  ports:
+    - name: http
+      port: 8888
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -90,6 +95,7 @@ spec:
             httpGet:
               path: /healthcheck
               port: 8888
+      serviceAccountName: resty-mcrestface-2
 ---
 apiVersion: v1
 kind: Service
@@ -99,6 +105,10 @@ metadata:
     service: resty-mcrestface-2
   name: resty-mcrestface-2
   namespace: istio-test
+spec:
+  ports:
+    - name: http
+      port: 8888
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -140,6 +150,7 @@ spec:
             httpGet:
               path: /healthcheck
               port: 8888
+      serviceAccountName: resty-mcrestface-3
 ---
 apiVersion: v1
 kind: Service
@@ -149,6 +160,10 @@ metadata:
     service: resty-mcrestface-3
   name: resty-mcrestface-3
   namespace: istio-test
+spec:
+  ports:
+    - name: http
+      port: 8888
 ---
 apiVersion: v1
 kind: ServiceAccount

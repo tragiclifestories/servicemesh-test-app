@@ -28,6 +28,7 @@ in  \(id : Natural) ->
                   , labels = Some (toMap { app = name })
                   }
                 , spec = Some k8s.PodSpec::{
+                  , serviceAccountName = Some name
                   , containers =
                     [ k8s.Container::{
                       , name = "app"
@@ -62,6 +63,10 @@ in  \(id : Natural) ->
               , namespace = Some "istio-test"
               , name = Some name
               , labels = Some (toMap { app = name, service = name })
+              }
+            , spec = Some k8s.ServiceSpec::{
+              , ports = Some
+                [ k8s.ServicePort::{ name = Some "http", port = 8888 } ]
               }
             }
 
