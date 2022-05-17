@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/tragiclifestories/servicemesh-test-app/pkg/hello"
+	"github.com/tragiclifestories/servicemesh-test-app/pkg/proxy"
 
 	"github.com/oklog/run"
 	"github.com/urfave/cli/v2"
@@ -47,6 +49,7 @@ func RestAction(c *cli.Context) error {
 	addr := c.String("listen-address")
 	identity := c.String("identity")
 	h := hello.NewHello(identity, logger)
+	p := proxy.NewProxy(http.Client{}, logger)
 
 	var g run.Group
 	g.Add(func() error {
@@ -69,13 +72,30 @@ func RestAction(c *cli.Context) error {
 			if fromParam := params.Get("from"); fromParam != "" {
 				from = fromParam
 			}
+			var response hello.HelloResponse
+			idParam := params.Get("proxy-to")
+			logger.Info("request received", zap.String("event", "request.received"), zap.String("from", from), zap.String("proxy_to", idParam))
+			if idParam != "" {
+				id, err := strconv.Atoi(idParam)
+				if err != nil {
+					w.WriteHeader(500)
+					return
+				}
 
-			logger.Info("request received", zap.String("event", "request.received"), zap.String("from", from))
+				response, err = p.SayHello(ctx, id, from)
+				if err != nil {
+					w.WriteHeader(500)
+					return
+				}
 
-			response := h.SayHello(from)
+			} else {
+				response = h.SayHello(from)
+			}
+
 			bytes, err := json.Marshal(response)
 			if err != nil {
 				w.WriteHeader(500)
+				return
 			}
 
 			w.Write(bytes)
