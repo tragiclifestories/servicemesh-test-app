@@ -3,176 +3,185 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    istio-injection: enabled
-  name: linkerd-test
+    "istio-injection": enabled
+  name: "linkerd-test"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resty-mcrestface-1
-  namespace: linkerd-test
+  name: "resty-mcrestface-1"
+  namespace: "linkerd-test"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: resty-mcrestface-1
+      app: "resty-mcrestface-1"
   template:
     metadata:
       labels:
-        app: resty-mcrestface-1
-      name: resty-mcrestface-1
+        app: "resty-mcrestface-1"
+      name: "resty-mcrestface-1"
     spec:
       containers:
-        - command:
-            - servicemesh-test-app
-            - rest
-            - "--identity"
-            - resty-mcrestface-1
-          image: tragiclifestories/servicemesh-test-app:latest
-          livenessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-          name: app
-          ports:
-            - containerPort: 8888
-          readinessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-      serviceAccountName: resty-mcrestface-1
+      - command:
+        - "servicemesh-test-app"
+        - rest
+        - "--identity"
+        - "resty-mcrestface-1"
+        image: "tragiclifestories/servicemesh-test-app:latest"
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+        name: app
+        ports:
+        - containerPort: 8888
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+      serviceAccountName: "resty-mcrestface-1"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: resty-mcrestface-1
-    service: resty-mcrestface-1
-  name: resty-mcrestface-1
-  namespace: linkerd-test
+    app: "resty-mcrestface-1"
+    service: "resty-mcrestface-1"
+  name: "resty-mcrestface-1"
+  namespace: "linkerd-test"
 spec:
   ports:
-    - name: http
-      port: 8888
+  - name: http
+    port: 8888
   selector:
-    app: resty-mcrestface-1
+    app: "resty-mcrestface-1"
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: resty-mcrestface-1
-  namespace: linkerd-test
+  name: "resty-mcrestface-1"
+  namespace: "linkerd-test"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resty-mcrestface-2
-  namespace: linkerd-test
+  name: "resty-mcrestface-2"
+  namespace: "linkerd-test"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: resty-mcrestface-2
+      app: "resty-mcrestface-2"
   template:
     metadata:
       labels:
-        app: resty-mcrestface-2
-      name: resty-mcrestface-2
+        app: "resty-mcrestface-2"
+      name: "resty-mcrestface-2"
     spec:
       containers:
-        - command:
-            - servicemesh-test-app
-            - rest
-            - "--identity"
-            - resty-mcrestface-2
-          image: tragiclifestories/servicemesh-test-app:latest
-          livenessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-          name: app
-          ports:
-            - containerPort: 8888
-          readinessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-      serviceAccountName: resty-mcrestface-2
+      - command:
+        - "servicemesh-test-app"
+        - rest
+        - "--identity"
+        - "resty-mcrestface-2"
+        image: "tragiclifestories/servicemesh-test-app:latest"
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+        name: app
+        ports:
+        - containerPort: 8888
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+      serviceAccountName: "resty-mcrestface-2"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: resty-mcrestface-2
-    service: resty-mcrestface-2
-  name: resty-mcrestface-2
-  namespace: linkerd-test
+    app: "resty-mcrestface-2"
+    service: "resty-mcrestface-2"
+  name: "resty-mcrestface-2"
+  namespace: "linkerd-test"
 spec:
   ports:
-    - name: http
-      port: 8888
+  - name: http
+    port: 8888
   selector:
-    app: resty-mcrestface-2
+    app: "resty-mcrestface-2"
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: resty-mcrestface-2
-  namespace: linkerd-test
+  name: "resty-mcrestface-2"
+  namespace: "linkerd-test"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resty-mcrestface-3
-  namespace: linkerd-test
+  name: "resty-mcrestface-3"
+  namespace: "linkerd-test"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: resty-mcrestface-3
+      app: "resty-mcrestface-3"
   template:
     metadata:
       labels:
-        app: resty-mcrestface-3
-      name: resty-mcrestface-3
+        app: "resty-mcrestface-3"
+      name: "resty-mcrestface-3"
     spec:
       containers:
-        - command:
-            - servicemesh-test-app
-            - rest
-            - "--identity"
-            - resty-mcrestface-3
-          image: tragiclifestories/servicemesh-test-app:latest
-          livenessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-          name: app
-          ports:
-            - containerPort: 8888
-          readinessProbe:
-            httpGet:
-              path: /healthcheck
-              port: 8888
-      serviceAccountName: resty-mcrestface-3
+      - command:
+        - "servicemesh-test-app"
+        - rest
+        - "--identity"
+        - "resty-mcrestface-3"
+        image: "tragiclifestories/servicemesh-test-app:latest"
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+        name: app
+        ports:
+        - containerPort: 8888
+        readinessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 8888
+      serviceAccountName: "resty-mcrestface-3"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: resty-mcrestface-3
-    service: resty-mcrestface-3
-  name: resty-mcrestface-3
-  namespace: linkerd-test
+    app: "resty-mcrestface-3"
+    service: "resty-mcrestface-3"
+  name: "resty-mcrestface-3"
+  namespace: "linkerd-test"
 spec:
   ports:
-    - name: http
-      port: 8888
+  - name: http
+    port: 8888
   selector:
-    app: resty-mcrestface-3
+    app: "resty-mcrestface-3"
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: resty-mcrestface-3
-  namespace: linkerd-test
+  name: "resty-mcrestface-3"
+  namespace: "linkerd-test"

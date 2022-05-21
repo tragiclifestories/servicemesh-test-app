@@ -1,6 +1,4 @@
-let k8s =
-      https://raw.githubusercontent.com/dhall-lang/dhall-k8s/master/1.22/package.dhall
-        sha256:53c03eb6a2cf118b3608f81253293993308a11f46b4463a18e376d343163bb21
+let k8s = ./vendor/package.dhall
 
 let List/concatMap =
       https://raw.githubusercontent.com/dhall-lang/dhall-lang/v21.1.0/Prelude/List/concatMap.dhall
